@@ -30,15 +30,7 @@ module ModelFormProcessor
   end
 
   def build_form(model_instance = nil)
-    if context_forms.include?(form_name)
-      form_name.new(model_instance || authorize(model.new), current_user)
-    else
-      form_name.new(model_instance || authorize(model.new))
-    end
-  end
-
-  def context_forms
-    [WorkoutForm, FeedbackForm, ExerciseForm]
+    form_name.new(model_instance || authorize(model.new), current_user)
   end
 
   def form_name
