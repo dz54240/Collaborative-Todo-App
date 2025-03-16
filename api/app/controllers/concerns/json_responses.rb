@@ -1,0 +1,64 @@
+# frozen_string_literal: true
+
+module JsonResponses
+  extend ActiveSupport::Concern
+  def render_json(data)
+    render json: serializer(data).serializable_hash.to_json, status: :ok
+  end
+
+  def render_json_created(data)
+    render json: serializer(data).serializable_hash.to_json, status: :created
+  end
+
+  def render_json_bad_request(data)
+    render json: { errors: data }, status: :bad_request
+  end
+
+  def render_unauthorized(error)
+    render json: { errors: [error] }, status: :unauthorized
+  end
+
+  def render_forbidden
+    render json: { errors: ['forbidden'] }, status: :forbidden
+  end
+
+  def render_token(session_info)
+    render json: { data: session_info }, status: :created
+  end
+
+  def render_refresh_token_error(error)
+    render json: { errors: [error] }, status: :unauthorized
+  end
+
+  def render_logout_error
+    render json: { errors: ['logout failed'] }, status: :bad_request
+  end
+
+  def render_credentials_error
+    render json: { errors: ['credentials are invalid'] }, status: :bad_request
+  end
+
+  def record_not_found(exception)
+    render json: {
+      errors: {
+        database: ["#{exception.model} not found"]
+      }
+    }, status: :not_found
+  end
+
+  private
+
+  def serializer(data)
+    serializer_class.new(data, include: resolved_includes)
+  rescue NameError
+    raise "Serializer not found for #{model.name}"
+  end
+
+  def serializer_class
+    serializer_class_name.constantize
+  end
+
+  def serializer_class_name
+    "#{controller_name.classify}Serializer"
+  end
+end
