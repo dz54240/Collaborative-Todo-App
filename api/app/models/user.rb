@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :received_invites, class_name: 'Invite', foreign_key: 'receiver_id', inverse_of: :receiver, dependent: :destroy
   has_many :user_workspaces, dependent: :destroy, inverse_of: :user
   has_many :workspaces, through: :user_workspaces
+  has_many :todos, dependent: :nullify, inverse_of: :assignee
 
   validates :first_name, presence: true, length: { minimum: 1 }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
