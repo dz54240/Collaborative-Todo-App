@@ -14,6 +14,8 @@
 class Section < ApplicationRecord
   belongs_to :workspace
 
+  has_many :todos, dependent: :destroy
+
   validates :name, presence: true, length: { minimum: 1 }
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
 end
