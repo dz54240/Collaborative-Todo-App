@@ -11,4 +11,6 @@ class TodoSerailizer
   attribute :status
   attribute :priority
   attribute :due_date
+  attribute :created_at
+  attribute :updated_at
 end

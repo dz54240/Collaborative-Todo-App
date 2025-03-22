@@ -9,6 +9,8 @@ module Base
         @result = super
 
         create_user_workspace(@result.data.id) if @result.success?
+
+        create_default_section(@result.data.id) if @result.success?
       end
 
       @result
@@ -17,10 +19,18 @@ module Base
     private
 
     def create_user_workspace(workspace_id)
-      UserWorkspace.create(
+      UserWorkspace.create!(
         user_id: current_user.id,
         workspace_id:,
         admin: true
+      )
+    end
+
+    def create_default_section(workspace_id)
+      Section.create!(
+        name: 'Todo section',
+        workspace_id:,
+        position: 0
       )
     end
   end

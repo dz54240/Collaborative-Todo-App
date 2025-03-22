@@ -7,4 +7,6 @@ class InviteSerializer
   set_id :id
 
   attribute :status
+  attribute :created_at
+  attribute :updated_at
 end

@@ -7,5 +7,7 @@ Rails.application.routes.draw do
     resources :users, except: [:new, :edit]
 
     resources :workspaces, except: [:new, :edit]
+
+    resources :sections, except: [:new, :edit]
   end
 end

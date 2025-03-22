@@ -8,4 +8,6 @@ class SectionSerializer
 
   attribute :name
   attribute :position
+  attribute :created_at
+  attribute :updated_at
 end
