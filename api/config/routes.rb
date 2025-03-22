@@ -2,6 +2,8 @@
 
 Rails.application.routes.draw do
   namespace :api do
-    resource :session, only: [:create, :destroy]
+    resource :sessions, only: [:create, :destroy]
+
+    resources :users, except: [:new, :edit]
   end
 end

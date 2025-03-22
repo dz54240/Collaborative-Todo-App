@@ -18,6 +18,10 @@ module JsonResponses
     render json: { errors: [error] }, status: :unauthorized
   end
 
+  def render_errors(errors)
+    render json: { errors: }, status: :bad_request
+  end
+
   def render_forbidden
     render json: { errors: ['forbidden'] }, status: :forbidden
   end
@@ -41,7 +45,7 @@ module JsonResponses
   private
 
   def serializer(data)
-    serializer_class.new(data, include: resolved_includes)
+    serializer_class.new(data)
   rescue NameError
     raise "Serializer not found for #{model.name}"
   end

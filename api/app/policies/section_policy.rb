@@ -21,8 +21,12 @@ class SectionPolicy < ApplicationPolicy
     belongs_to_user_workspace?
   end
 
-  def permitted_attributes
-    [:name, :position, :workspace_id]
+  def permitted_attributes_for_create
+    permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    permitted_attributes
   end
 
   class Scope < Scope
@@ -32,6 +36,10 @@ class SectionPolicy < ApplicationPolicy
   end
 
   private
+
+  def permitted_attributes
+    [:name, :position, :workspace_id]
+  end
 
   def belongs_to_user_workspace?
     user.workspace_ids.include?(record.workspace_id)

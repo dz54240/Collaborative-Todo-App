@@ -21,8 +21,12 @@ class WorkspacePolicy < ApplicationPolicy
     user_is_admin?
   end
 
-  def permitted_attributes
-    [:name, :description]
+  def permitted_attributes_for_create
+    permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    permitted_attributes
   end
 
   class Scope < Scope
@@ -32,6 +36,10 @@ class WorkspacePolicy < ApplicationPolicy
   end
 
   private
+
+  def permitted_attributes
+    [:name, :description]
+  end
 
   def user_is_member?
     record.users.exists?(id: user.id)

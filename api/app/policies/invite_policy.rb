@@ -21,8 +21,12 @@ class InvitePolicy < ApplicationPolicy
     user_inviter? || user_receiver?
   end
 
-  def permitted_attributes
-    [:sender_id, :receiver_id, :workspace_id, :status]
+  def permitted_attributes_for_create
+    permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    permitted_attributes
   end
 
   class Scope < Scope
@@ -32,6 +36,10 @@ class InvitePolicy < ApplicationPolicy
   end
 
   private
+
+  def permitted_attributes
+    [:sender_id, :receiver_id, :workspace_id, :status]
+  end
 
   def user_inviter?
     record.inviter_id == user.id

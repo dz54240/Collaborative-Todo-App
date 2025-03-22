@@ -21,8 +21,12 @@ class TodoPolicy < ApplicationPolicy
     user_can_access_section?
   end
 
-  def permitted_attributes
-    [:title, :description, :status, :priority, :due_date, :section_id, :assignee_id]
+  def permitted_attributes_for_create
+    permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    permitted_attributes
   end
 
   class Scope < Scope
@@ -32,6 +36,10 @@ class TodoPolicy < ApplicationPolicy
   end
 
   private
+
+  def permitted_attributes
+    [:title, :description, :status, :priority, :due_date, :section_id, :assignee_id]
+  end
 
   def user_can_access_section?
     user.workspace_ids.include?(record.section.workspace_id)

@@ -21,8 +21,12 @@ class UserPolicy < ApplicationPolicy
     owned?
   end
 
-  def permitted_attributes
-    [:email, :first_name, :last_name, :password]
+  def permitted_attributes_for_create
+    permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    permitted_attributes
   end
 
   class Scope < Scope
@@ -32,6 +36,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   private
+
+  def permitted_attributes
+    [:email, :first_name, :last_name, :password]
+  end
 
   def owned?
     record.id == user.id
