@@ -6,6 +6,7 @@ module Base
       @record = record
       @params = params
       @current_user = current_user
+      @result = nil
     end
 
     def save

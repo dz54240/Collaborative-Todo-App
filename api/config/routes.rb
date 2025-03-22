@@ -5,5 +5,7 @@ Rails.application.routes.draw do
     resource :sessions, only: [:create, :destroy]
 
     resources :users, except: [:new, :edit]
+
+    resources :workspaces, except: [:new, :edit]
   end
 end
