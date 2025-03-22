@@ -12,7 +12,7 @@
 #
 class Workspace < ApplicationRecord
   has_many :invites, dependent: :destroy
-  has_many :user_workspaces, dependent: :destroy
+  has_many :user_workspaces, dependent: :destroy, inverse_of: :workspace
   has_many :users, through: :user_workspaces
 
   validates :name, presence: true, length: { minimum: 1 }
