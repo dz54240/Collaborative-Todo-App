@@ -17,9 +17,41 @@ class User < ApplicationRecord
   has_secure_password
   has_secure_token
 
-  validates :first_name, presence: true, length: { minimum: 2 }
+  has_many :sent_invites, class_name: 'Invite', foreign_key: 'sender_id', inverse_of: :sender, dependent: :destroy
+  has_many :received_invites, class_name: 'Invite', foreign_key: 'receiver_id', inverse_of: :receiver, dependent: :destroy
+  has_many :user_workspaces, dependent: :destroy
+  has_many :workspaces, through: :user_workspaces
+
+  validates :first_name, presence: true, length: { minimum: 1 }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates_email_format_of :email, message: 'is invalid'
 
   default_scope { order(email: :asc) }
   scope :by_email, ->(email) { where('email ILIKE ?', "%#{email}%") }
+
+  before_destroy :handle_admin_workspaces
+
+  def owned_workspaces
+    workspaces.merge(UserWorkspace.where(admin: true))
+  end
+
+  def joined_workspaces
+    workspaces.merge(UserWorkspace.where(admin: false))
+  end
+
+  private
+
+  def handle_admin_workspaces
+    user_workspaces.where(admin: true).find_each do |uw|
+      workspace = uw.workspace
+
+      other_uws = workspace.user_workspaces.where.not(user_id: id)
+
+      if other_uws.any?
+        other_uws.first.update(admin: true)
+      else
+        workspace.destroy
+      end
+    end
+  end
 end
