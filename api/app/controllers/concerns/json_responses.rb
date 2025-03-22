@@ -22,16 +22,8 @@ module JsonResponses
     render json: { errors: ['forbidden'] }, status: :forbidden
   end
 
-  def render_token(session_info)
+  def render_session_data(session_info)
     render json: { data: session_info }, status: :created
-  end
-
-  def render_refresh_token_error(error)
-    render json: { errors: [error] }, status: :unauthorized
-  end
-
-  def render_logout_error
-    render json: { errors: ['logout failed'] }, status: :bad_request
   end
 
   def render_credentials_error
