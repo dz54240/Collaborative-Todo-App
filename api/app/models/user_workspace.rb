@@ -16,4 +16,14 @@ class UserWorkspace < ApplicationRecord
   belongs_to :workspace, inverse_of: :user_workspaces
 
   validates :admin, presence: true, inclusion: { in: [true, false] }
+  validate :only_one_admin_per_workspace
+
+  private
+
+  def only_one_admin_per_workspace
+    return unless admin?
+    return unless UserWorkspace.where(workspace_id:, admin: true).where.not(id:).exists?
+
+    errors.add(:admin, 'already exists for this workspace')
+  end
 end

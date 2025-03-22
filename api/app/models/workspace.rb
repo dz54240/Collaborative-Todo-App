@@ -17,4 +17,8 @@ class Workspace < ApplicationRecord
   has_many :users, through: :user_workspaces
 
   validates :name, presence: true, length: { minimum: 1 }
+
+  def admin
+    users.merge(UserWorkspace.where(admin: true)).first
+  end
 end
