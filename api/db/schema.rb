@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_22_093521) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_09_224541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,8 +45,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_22_093521) do
     t.bigint "assignee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
     t.index ["assignee_id"], name: "index_todos_on_assignee_id"
+    t.index ["created_by_id"], name: "index_todos_on_created_by_id"
     t.index ["section_id"], name: "index_todos_on_section_id"
+    t.index ["updated_by_id"], name: "index_todos_on_updated_by_id"
   end
 
   create_table "user_workspaces", force: :cascade do |t|
@@ -86,6 +90,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_22_093521) do
   add_foreign_key "sections", "workspaces"
   add_foreign_key "todos", "sections"
   add_foreign_key "todos", "users", column: "assignee_id"
+  add_foreign_key "todos", "users", column: "created_by_id"
+  add_foreign_key "todos", "users", column: "updated_by_id"
   add_foreign_key "user_workspaces", "users"
   add_foreign_key "user_workspaces", "workspaces"
 end

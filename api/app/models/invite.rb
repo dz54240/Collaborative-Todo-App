@@ -17,6 +17,9 @@ class Invite < ApplicationRecord
   belongs_to :receiver, class_name: 'User', inverse_of: :received_invites
   belongs_to :workspace
 
+  validates :sender_id, presence: true
+  validates :receiver_id, presence: true
+  validates :workspace_id, presence: true
   validates :status, presence: true, inclusion: { in: %w[pending accepted rejected], message: 'is not a valid status' }
 
   scope :pending, -> { where(status: 'pending') }

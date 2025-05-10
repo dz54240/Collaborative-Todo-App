@@ -2,21 +2,31 @@
 
 module Base
   class SectionSaver < Base::BaseSaver
+    include ActiveModel::Validations
+
+    validate :workspace_must_be_accessible
+
     def save
-      unless workspace_accessible?
-        record.errors.add(:workspace_id, 'is not accesible')
-        return Base::BaseSaverResult.failure(record.errors.full_messages)
-      end
+      return Base::BaseSaverResult.failure(errors.full_messages) unless valid?
 
       super
     end
 
     private
 
-    def workspace_accessible?
-      return true if params[:workspace_id].nil?
+    def workspace_must_be_accessible
+      return if workspace_id.nil?
+      return if workspace_scope.exists?(id: workspace_id)
 
-      current_user.workspace_ids.include?(params[:workspace_id])
+      errors.add(:workspace_id, 'is not accessible')
+    end
+
+    def workspace_id
+      params[:workspace_id]
+    end
+
+    def workspace_scope
+      WorkspacePolicy::Scope.new(current_user, Workspace).resolve
     end
   end
 end

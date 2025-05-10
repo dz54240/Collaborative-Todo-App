@@ -9,5 +9,14 @@ Rails.application.routes.draw do
     resources :workspaces, except: [:new, :edit]
 
     resources :sections, except: [:new, :edit]
+
+    resources :todos, except: [:new, :edit]
+
+    resources :invites, only: [:create, :index, :destroy] do
+      member do
+        patch :accept
+        patch :reject
+      end
+    end
   end
 end

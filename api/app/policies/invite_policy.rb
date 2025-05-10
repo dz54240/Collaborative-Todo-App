@@ -13,8 +13,12 @@ class InvitePolicy < ApplicationPolicy
     true
   end
 
-  def update?
-    user_inviter? || user_receiver?
+  def accept?
+    user_receiver? && record.status == 'pending'
+  end
+
+  def reject?
+    user_receiver? && record.status == 'pending'
   end
 
   def destroy?

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TodoSerailizer
+class TodoSerializer
   include JSONAPI::Serializer
 
   set_type :todo

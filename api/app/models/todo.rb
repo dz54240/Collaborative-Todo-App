@@ -17,7 +17,9 @@
 #
 class Todo < ApplicationRecord
   belongs_to :section
-  belongs_to :assignee, class_name: 'User'
+  belongs_to :assignee, class_name: 'User', optional: true
+  belongs_to :created_by, class_name: 'User', optional: true
+  belongs_to :updated_by, class_name: 'User', optional: true
 
   validates :title, presence: true, length: { minimum: 1 }
   validates :status, presence: true, inclusion: { in: %w[todo working done], message: 'not a valid status' }

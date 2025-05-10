@@ -15,7 +15,7 @@ class UserWorkspace < ApplicationRecord
   belongs_to :user, inverse_of: :user_workspaces
   belongs_to :workspace, inverse_of: :user_workspaces
 
-  validates :admin, presence: true, inclusion: { in: [true, false] }
+  validates :admin, inclusion: { in: [true, false] }
   validate :only_one_admin_per_workspace
 
   private
