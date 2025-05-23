@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
   namespace :api do
     resource :sessions, only: [:create, :destroy]
 

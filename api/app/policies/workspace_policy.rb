@@ -18,7 +18,7 @@ class WorkspacePolicy < ApplicationPolicy
   end
 
   def destroy?
-    user_is_admin?
+    record.users.pluck(:id).include?(user.id)
   end
 
   def permitted_attributes_for_create

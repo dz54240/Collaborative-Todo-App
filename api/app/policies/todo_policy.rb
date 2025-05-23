@@ -31,7 +31,7 @@ class TodoPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      Todo.joins(:section).where(sections: { workspace_id: user.workspace_ids })
+      scope.joins(:section).where(sections: { workspace_id: user.workspace_ids })
     end
   end
 

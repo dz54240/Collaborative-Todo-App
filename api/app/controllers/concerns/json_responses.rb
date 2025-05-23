@@ -45,7 +45,7 @@ module JsonResponses
   private
 
   def serializer(data)
-    serializer_class.new(data)
+    serializer_class.new(data, include: includes)
   rescue NameError
     raise "Serializer not found for #{model.name}"
   end

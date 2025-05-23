@@ -1,5 +1,9 @@
 development:
   adapter: async
+  ping_interval: 30
+  allowed_request_origins:
+    - http://localhost:3000
+    - https://localhost:3000
 
 test:
   adapter: test

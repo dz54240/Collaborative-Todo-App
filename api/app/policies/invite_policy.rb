@@ -35,18 +35,26 @@ class InvitePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      user.sent_invites + user.received_invites
+      sent_invites.or(received_invites)
+    end
+
+    def sent_invites
+      scope.where(sender_id: user.id)
+    end
+
+    def received_invites
+      scope.where(receiver_id: user.id)
     end
   end
 
   private
 
   def permitted_attributes
-    [:sender_id, :receiver_id, :workspace_id, :status]
+    [:receiver_email, :workspace_id, :status]
   end
 
   def user_inviter?
-    record.inviter_id == user.id
+    record.sender_id == user.id
   end
 
   def user_receiver?

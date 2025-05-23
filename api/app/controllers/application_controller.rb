@@ -18,6 +18,10 @@ class ApplicationController < ActionController::API
     authorize @resource = class_name.find(params[:id])
   end
 
+  def includes
+    []
+  end
+
   def create_resource
     authorize @new_resource = class_name.new
   end

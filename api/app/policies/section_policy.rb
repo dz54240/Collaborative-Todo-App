@@ -31,7 +31,7 @@ class SectionPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      Section.where(workspace_id: user.workspaces.pluck(:id))
+      scope.where(workspace_id: user.workspaces.pluck(:id))
     end
   end
 

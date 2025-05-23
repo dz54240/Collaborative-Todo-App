@@ -42,5 +42,7 @@ module Api
     config.api_only = true
 
     config.action_controller.default_protect_from_forgery = false
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end

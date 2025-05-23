@@ -7,7 +7,7 @@ module Api
     before_action :create_resource, only: [:create]
 
     def index
-      render_json(policy_scope(Todo))
+      render_json(policy_scope(Todo.where(section_id: section_filter)))
     end
 
     def show
@@ -29,6 +29,14 @@ module Api
     end
 
     private
+
+    def includes
+      [:created_by, :updated_by]
+    end
+
+    def section_filter
+      params[:section]
+    end
 
     def saver(params)
       @saver ||= Base::TodoSaver.new(@resource || @new_resource, params, current_user)

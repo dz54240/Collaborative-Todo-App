@@ -23,7 +23,9 @@ module Api
     end
 
     def destroy
-      @resource.destroy
+      UserWorkspace.find_by(workspace_id: @resource.id, user_id: current_user.id).destroy
+
+      @resource.destroy if @resource.users.empty?
 
       head :no_content
     end

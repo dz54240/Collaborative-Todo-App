@@ -30,7 +30,7 @@ class User < ApplicationRecord
   default_scope { order(email: :asc) }
   scope :by_email, ->(email) { where('email ILIKE ?', "%#{email}%") }
 
-  before_destroy :handle_admin_workspaces
+  # before_destroy :handle_admin_workspaces
 
   def owned_workspaces
     workspaces.merge(UserWorkspace.where(admin: true))
@@ -40,19 +40,17 @@ class User < ApplicationRecord
     workspaces.merge(UserWorkspace.where(admin: false))
   end
 
-  private
+  # def handle_admin_workspaces
+  #   user_workspaces.where(admin: true).find_each do |uw|
+  #     workspace = uw.workspace
 
-  def handle_admin_workspaces
-    user_workspaces.where(admin: true).find_each do |uw|
-      workspace = uw.workspace
+  #     other_uws = workspace.user_workspaces.where.not(user_id: id)
 
-      other_uws = workspace.user_workspaces.where.not(user_id: id)
-
-      if other_uws.any?
-        other_uws.first.update(admin: true)
-      else
-        workspace.destroy
-      end
-    end
-  end
+  #     if other_uws.any?
+  #       other_uws.first.update(admin: true)
+  #     else
+  #       workspace.destroy
+  #     end
+  #   end
+  # end
 end

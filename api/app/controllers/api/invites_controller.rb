@@ -3,11 +3,11 @@
 module Api
   class InvitesController < ApplicationController
     before_action :authenticate_user
-    before_action :preload_resource, only: [:accept, :reject]
+    before_action :preload_resource, only: [:accept, :reject, :destroy]
     before_action :create_resource, only: [:create]
 
     def index
-      render_json(policy_scope(Invite))
+      render_json(policy_scope(Invite.includes(:workspace)))
     end
 
     def create
@@ -31,6 +31,10 @@ module Api
     end
 
     private
+
+    def includes
+      [:workspace, :receiver, :sender]
+    end
 
     def invite_acceptor
       @invite_acceptor ||= Invites::InviteAcceptor.new(@resource, current_user)

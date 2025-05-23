@@ -7,7 +7,7 @@ module Api
     before_action :create_resource, only: [:create]
 
     def index
-      render_json(policy_scope(Section))
+      render_json(policy_scope(Section.where(workspace_id: workspace_filter)))
     end
 
     def show
@@ -24,11 +24,14 @@ module Api
 
     def destroy
       @resource.destroy
-
       head :no_content
     end
 
     private
+
+    def workspace_filter
+      params[:workspace]
+    end
 
     def saver(params)
       @saver ||= Base::SectionSaver.new(@resource || @new_resource, params, current_user)

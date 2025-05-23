@@ -8,6 +8,7 @@ class SectionSerializer
 
   attribute :name
   attribute :position
+  attribute :workspace_id
   attribute :created_at
   attribute :updated_at
 end

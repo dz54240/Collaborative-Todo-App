@@ -11,6 +11,10 @@ class TodoSerializer
   attribute :status
   attribute :priority
   attribute :due_date
+  attribute :section_id
   attribute :created_at
   attribute :updated_at
+
+  belongs_to :created_by, serializer: UserSerializer
+  belongs_to :updated_by, serializer: UserSerializer
 end

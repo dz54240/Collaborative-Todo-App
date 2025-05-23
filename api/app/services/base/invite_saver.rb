@@ -9,7 +9,7 @@ module Base
     validate :workspace_must_be_accessible
 
     def save
-      set_sender
+      set_sender && set_receiver && update_params
 
       return BaseSaverResult.failure(errors.full_messages) unless valid?
 
@@ -20,6 +20,14 @@ module Base
 
     def set_sender
       record.sender_id = sender_id
+    end
+
+    def set_receiver
+      record.receiver_id = receiver_id
+    end
+
+    def update_params
+      params.delete(:receiver_email)
     end
 
     def receiver_exists
@@ -45,7 +53,13 @@ module Base
     end
 
     def receiver
-      @receiver ||= User.find_by(id: receiver_id)
+      @receiver ||= User.find_by(email: receiver_email)
+    end
+
+    def receiver_id
+      return unless receiver
+
+      receiver.id
     end
 
     def old_invite
@@ -56,8 +70,8 @@ module Base
       current_user.id
     end
 
-    def receiver_id
-      params[:receiver_id]
+    def receiver_email
+      params[:receiver_email]
     end
 
     def workspace_id
